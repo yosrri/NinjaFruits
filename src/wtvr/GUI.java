@@ -150,7 +150,7 @@ public class GUI extends Application{
 		}
 		public void sliceSound()
 		{
-			String path = "C:/Users/OMAR/Desktop/Images/Slice.mp3";
+			String path = "C:\\Java Programs\\Yosri\\src\\Slice.mp3";
 			Media media = new Media(new File(path).toURI().toString());
 			 mediaPlayer = new MediaPlayer(media);
 			 mediaPlayer.setAutoPlay(true);

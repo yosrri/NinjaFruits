@@ -3,7 +3,7 @@ package wtvr;
 import javafx.scene.image.Image;
 
 
-public class Banana implements IDrops{
+public class Banana extends Fruits implements IDrops{
 
 	@Override
 	public Image getImage(){

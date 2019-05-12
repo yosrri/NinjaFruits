@@ -14,7 +14,7 @@ public class Bomb {
 
 		BufferedImage img = null;
 		for(int i=0;i<2;i++) {			
-		File file =  new File("C:\\Users\\OMAR\\Desktop\\Images\\bomb"+(i)+".png");
+		File file =  new File("C:\\Java Programs\\Yosri\\src\\bomb"+(i)+".png");
 	try {
 			img = ImageIO.read(file);
 		} catch (IIOException e) {
