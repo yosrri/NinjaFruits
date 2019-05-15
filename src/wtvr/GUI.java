@@ -42,7 +42,7 @@ public class GUI extends Application{
 	public ImageView fruitDrops(ArrayList<String>fruits) {
 		FruitFactory factory = new FruitFactory();
 		IDrops anon = factory.getFruit(fruits.get((int)(0+Math.random()*3)));
-		ImageView fruitImg = new ImageView(anon.getImage());
+		ImageView fruitImg = new ImageView(SwingFXUtils.toFXImage(anon.getImage(),null));
 	
 		fruitImg.setFitHeight(70);
 		fruitImg.setFitWidth(70);
@@ -84,8 +84,7 @@ public class GUI extends Application{
 }
 	public ImageView bombDrops() {
 		Bomb x = new Bomb();
-		int imgNo=(int)(0+Math.random()*2);
-		ImageView bombImg = new ImageView(SwingFXUtils.toFXImage(x.getImage()[imgNo], null));
+		ImageView bombImg = new ImageView(SwingFXUtils.toFXImage(x.getImage(), null));
 	
 		bombImg.setFitHeight(70);
 		bombImg.setFitWidth(70);
@@ -108,10 +107,10 @@ public class GUI extends Application{
                 	bombImg.setTranslateY(700);
                    scoreLabel.setText("Score: "+toString().valueOf(score));
                    bombImg.setVisible(false);
-                   if(imgNo==0)
+                  // if(imgNo==0)
                 	   life--;
-                   else
-                	   life=0;
+                   //else
+                	 //  life=0;
                 } 
              };  
              bombImg.addEventFilter(MouseEvent.MOUSE_ENTERED, eventHandler); 
@@ -120,13 +119,14 @@ public class GUI extends Application{
 	public void start(Stage primaryStage) {
 		  
 		ArrayList<String> x = new ArrayList<>();
+
+		scoreLabel= new Label("Score: "+"0");
+		missedLabel= new Label("Missed: "+"0");
 		x.add("apple");
 		x.add("banana");
 		x.add("watermelon");
 		x.add("bomb");
 		x.add("fatalbomb");
-		scoreLabel= new Label("Score: "+"0");
-		missedLabel= new Label("Missed: "+"0");
 		lifeLabel= new Label("Lifes: "+"3");
 		for(int i=0;i<10;i++)
 			drop.add(fruitDrops(x));
@@ -150,10 +150,10 @@ public class GUI extends Application{
 		}
 		public void sliceSound()
 		{
-			String path = "C:/Users/OMAR/Desktop/Images/Slice.mp3";
+			String path = "E:\\Fruitnin\\src\\Slice.mp3";
 			Media media = new Media(new File(path).toURI().toString());
-			 mediaPlayer = new MediaPlayer(media);
-			 mediaPlayer.setAutoPlay(true);
+			mediaPlayer = new MediaPlayer(media);
+			mediaPlayer.setAutoPlay(true);
 		}
 	}
 

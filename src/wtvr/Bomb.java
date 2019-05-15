@@ -8,13 +8,14 @@ import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 
 
-public class Bomb {
-	public   BufferedImage[] getImage()   {
-		BufferedImage[] arr = new BufferedImage[5];
+public class Bomb  implements IDrops{
+
+	public   BufferedImage getImage()   {
+
 
 		BufferedImage img = null;
-		for(int i=0;i<2;i++) {			
-		File file =  new File("C:\\Users\\OMAR\\Desktop\\Images\\bomb"+(i)+".png");
+
+		File file =  new File("E:\\Fruitnin\\src\\bomb0.png");
 	try {
 			img = ImageIO.read(file);
 		} catch (IIOException e) {
@@ -22,12 +23,7 @@ public class Bomb {
 		}catch(IOException e) {
 			
 		}
+		return img;
 
-		arr[i] = img;
-}
-		return arr;
-	
 	}
-
-
 }
