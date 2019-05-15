@@ -37,6 +37,7 @@ public class TestGui extends Application {
     double speed;
     double falling;
     Label lblMissed;
+    Label lives;
     int missed;
     int i ;
     MediaPlayer mediaPlayer;
@@ -52,8 +53,11 @@ public class TestGui extends Application {
         controller = new Controller();
         firstMode = new ClassicMode();
         lblMissed = new Label("Missed: 0");
+        lives=new Label("Lives: 3");
         lblMissed.setLayoutX(10);
         lblMissed.setLayoutY(10);
+        lives.setLayoutX(10);
+        lives.setLayoutX(10);
         missed = 0;
 
         speed = 1;
@@ -80,7 +84,7 @@ public class TestGui extends Application {
         };
         timer.start();
 
-        root.getChildren().addAll(lblMissed);
+        root.getChildren().addAll(lblMissed,lives);
 
         Scene scene = new Scene(root, 750, 700);
 
