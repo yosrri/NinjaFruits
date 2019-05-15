@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class Banana implements IDrops{
+public class Banana extends Fruits implements IDrops{
 
 	@Override
 	public BufferedImage getImage(){
