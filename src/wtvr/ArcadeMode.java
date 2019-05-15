@@ -4,21 +4,19 @@ import java.util.ArrayList;
 
 public class ArcadeMode implements GameMode {
     @Override
-    public ArrayList<IDrops> CreateDrops() {
-        ArrayList<IDrops> Drops= new ArrayList<IDrops>();
+    public ArrayList<IDrops> createDrops() {
+        ArrayList<IDrops> drops= new ArrayList<IDrops>();
         FruitFactory factory = new FruitFactory();
-        Drops.add(factory.getFruit("apple"));
-        Drops.add(factory.getFruit("banana"));
-        Drops.add(factory.getFruit("watermelon"));
-        return Drops;
+        drops.add(factory.getFruit("apple"));
+        drops.add(factory.getFruit("banana"));
+        drops.add(factory.getFruit("watermelon"));
+        return drops;
     }
 
     @Override
-    public boolean EndingCondiction(int time) {
+    public boolean endingCondition(int time) {
         if(time==60)
             return true;
         else return false;
     }
-
-
 }
