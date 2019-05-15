@@ -139,6 +139,7 @@ public class GUI extends Application{
 	public void start(Stage primaryStage) {
 		  
 		ArrayList<String> x = new ArrayList<>();
+		//
 
 		scoreLabel= new Label("Score: "+"0");
 		missedLabel= new Label("Missed: "+"0");
