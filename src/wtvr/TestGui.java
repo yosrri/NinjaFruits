@@ -49,7 +49,8 @@ public class TestGui extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        controller = new Controller();
+        firstMode = new ClassicMode();
         lblMissed = new Label("Missed: 0");
         lblMissed.setLayoutX(10);
         lblMissed.setLayoutY(10);
@@ -61,7 +62,7 @@ public class TestGui extends Application {
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(falling), event -> {
 
             speed += falling / 3000;
-            drop.add(getDrop());
+            drop.add(controller.newgame(firstMode).get((int)(0 + Math.random() * 5)).getImage());
             root.getChildren().add(((Node)drop.get(drop.size() -1)));
         }));
 
@@ -92,21 +93,6 @@ public class TestGui extends Application {
         primaryStage.show();
 
     }
-
-    public ImageView getDrop() {
-        controller = new Controller();
-        firstMode = new ClassicMode();
-        ArrayList<IDrops> drops = new ArrayList<>();
-        drops = controller.newgame(firstMode);
-        IDrops anon = drops.get((int) (0 + Math.random() * 5));
-        ImageView dropImg = new ImageView(SwingFXUtils.toFXImage(
-                anon.getImage(), null));
-        dropImg.setFitHeight(70);
-        dropImg.setFitWidth(70);
-        dropImg.setLayoutX(rand(0,400));
-        return dropImg;
-    }
-
 
     public int rand(int min, int max) {
         return (int)(Math.random() * max + min);
@@ -148,7 +134,7 @@ public class TestGui extends Application {
         }
     }
     public void sliceSound() {
-        String path = "E:\\Fruitnin\\Slice.mp3";
+        String path = "E:\\Fruitnin\\src\\Slice.mp3";
         Media media = new Media(new File(path).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setAutoPlay(true);

@@ -39,7 +39,7 @@ public class GUI extends Application{
     Label missedLabel;
     MediaPlayer mediaPlayer;
 
-	public ImageView fruitDrops(ArrayList<String>fruits) {
+	/*public ImageView fruitDrops(ArrayList<String>fruits) {
 		FruitFactory factory = new FruitFactory();
 		IDrops anon = factory.getFruit(fruits.get((int)(0+Math.random()*3)));
 		ImageView fruitImg = new ImageView(SwingFXUtils.toFXImage(anon.getImage(),null));
@@ -155,6 +155,7 @@ public class GUI extends Application{
 			Media media = new Media(new File(path).toURI().toString());
 			mediaPlayer = new MediaPlayer(media);
 			mediaPlayer.setAutoPlay(true);
-		}
-	}
+		}*/
+	public void start(Stage primaryStage) {}
+}
 
