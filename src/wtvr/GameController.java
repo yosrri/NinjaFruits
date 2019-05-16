@@ -7,6 +7,7 @@ public interface GameController {
     public void resetgame();
     public boolean gameEnder(int x);
     public void slice(IDrops obj);
-
+    public void changeGameVariable(int x);
+public int getGameVariable();
 
 }

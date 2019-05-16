@@ -3,16 +3,16 @@ package wtvr;
 import java.util.ArrayList;
 
 public class Controller implements GameController {
-    private  int time;
     private int score;
     GameMode game;
 
-    public int getTime() {
-        return time;
+    @Override
+    public int getGameVariable() {
+        return game.getGameVariable();
     }
 
-    public void setTime(int time) {
-        this.time = time;
+    public void changeGameVariable(int x) {
+        game.setGameVariable(x);
     }
 
     public int getScore() {
@@ -27,13 +27,15 @@ public class Controller implements GameController {
     public ArrayList<IDrops> newgame(GameMode game) {
         this.game=game;
         return game.createDrops();
+
     }
 
     @Override
     public void resetgame() {
-      time=0;
+        game.intializeGameVariable();
       score=0;
     }
+
 
     @Override
     public boolean gameEnder(int x) {
