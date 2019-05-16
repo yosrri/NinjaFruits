@@ -53,7 +53,7 @@ public class Watermelon implements IDrops {
                 img, null));
         dropImg.setFitHeight(70);
         dropImg.setFitWidth(70);
-        dropImg.setLayoutX(rand(0, 400));
+        dropImg.setLayoutX(rand(0, 700));
         return dropImg;
     }
 }

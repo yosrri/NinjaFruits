@@ -5,6 +5,20 @@ import java.util.Timer;
 import java.util.TimerTask;
 public class ClassicMode implements GameMode {
  int lives=3;
+
+    public int getGameVariable() {
+        return lives;
+    }
+
+    public void setGameVariable(int lives) {
+        this.lives = lives;
+    }
+
+    @Override
+    public void intializeGameVariable() {
+        lives=3;
+    }
+
     @Override
     public ArrayList<IDrops> createDrops() {
         ArrayList<IDrops> Drops= new ArrayList<IDrops>();

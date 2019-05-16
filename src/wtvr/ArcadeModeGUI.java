@@ -56,7 +56,7 @@ public class ArcadeModeGUI{
     MediaPlayer mediaPlayer;
     Controller controller;
     GameMode secondMode;
-    IDrops zeb;
+
     public ArcadeModeGUI(Stage stage)
     {
     	this.stage=stage;

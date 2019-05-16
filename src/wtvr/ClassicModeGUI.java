@@ -8,6 +8,7 @@ import java.util.List;
 
 
 
+
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -20,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -32,19 +34,24 @@ public class ClassicModeGUI {
     AnimationTimer timer;
     Pane root = new Pane();
     List drop = new ArrayList();
+    Timeline timeline;
     double mouseX;
     double mouseY;
     double speed;
     double falling;
     Label lblMissed;
     Label lives;
+    Label scoreLabel;
+    Label comboLabel;
+    int score=0;
+    int combo=0;
     int missed;
     int i ;
     int lifes=3;
+    int randomNo;
     MediaPlayer mediaPlayer;
     Controller controller;
     GameMode firstMode;
-    IDrops zeb;
     
     Scene scene ;
     Stage stage;
@@ -63,12 +70,11 @@ public class ClassicModeGUI {
     	
         controller = new Controller();
         firstMode = new ClassicMode();
-        lblMissed = new Label("Missed: 0");
-        lives=new Label("Lives:"+lifes);
-        lblMissed.setLayoutX(10);
-        lblMissed.setLayoutY(10);
-        lives.setLayoutX(10);
-        lives.setLayoutX(10);
+        lblMissed = new Label("Missed:"+String.valueOf(missed));
+        lives=new Label("Lives:"+String.valueOf(lifes));
+        scoreLabel = new Label("Score: "+String.valueOf(score));
+        comboLabel = new Label("Combo: "+String.valueOf(combo));
+        
         missed = 0;
 
         speed = 1;
@@ -76,10 +82,10 @@ public class ClassicModeGUI {
         
         
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(falling), event -> {
+         timeline = new Timeline(new KeyFrame(Duration.millis(falling), event -> {
 
             speed += falling / 3000;
-            int randomNo=(int)(0 + Math.random() * 5);
+             randomNo=(int)(0 + Math.random() * 5);
             drop.add(controller.newgame(firstMode).get(randomNo).getImage());
      
             root.getChildren().add(((Node)drop.get(drop.size() -1)));
@@ -98,8 +104,11 @@ public class ClassicModeGUI {
 
         };
         timer.start();
+        
+        VBox vb = new VBox(scoreLabel,lives,lblMissed,comboLabel);
+        vb.getChildren().addAll();
 
-        root.getChildren().addAll(lblMissed,lives);
+        root.getChildren().addAll(vb);
 
          scene = new Scene(root, 750, 700);
 
@@ -114,7 +123,10 @@ public class ClassicModeGUI {
         return (int)(Math.random() * max + min);
     }
     public void gameUpdate(){
-
+    	 lblMissed.setText("Missed: " + String.valueOf(missed));
+         lives.setText("Lifes: " + String.valueOf(lifes));
+         scoreLabel.setText("Score: "+String.valueOf(score));
+         comboLabel.setText("Combo: "+String.valueOf(combo));
 //        cont.setLayoutX(mouseX);
 //        cont.setLayoutY(mouseY);
 //        EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
@@ -139,6 +151,8 @@ public class ClassicModeGUI {
                 root.getChildren().remove(((ImageView) drop.get(i)));
                 drop.remove(i);
                 sliceSound();
+                score+=1;
+                combo+=1;
             }
 
             //if missed remove
@@ -147,8 +161,19 @@ public class ClassicModeGUI {
                 drop.remove(i);
                 missed += 1;
                 lifes-=1;
-                lblMissed.setText("Missed: " + String.valueOf(missed));
-                lives.setText("Lifes: " + String.valueOf(lifes));
+                
+                combo=0;
+               
+                if(controller.gameEnder(lifes))
+            	{
+                	lifes=0;
+            		timer.stop();
+            		timeline.stop();
+//            		Alert alert = new Alert(AlertType.WARNING);
+//    				alert.setTitle("Game Over!!");
+//    				alert.setHeaderText("GOOD LUCK NEXT TIME");
+//    				alert.showAndWait();
+            	}
             }
         }
     }

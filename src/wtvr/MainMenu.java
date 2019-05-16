@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBase;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -27,8 +28,17 @@ public void prepareScene()
 	Image backgroundImg = new Image("background.jpeg");
 	ImageView background = new ImageView(backgroundImg);
 	
-	//Image buttonImg = new Image("test.jpg");
-	//ImageView button = new ImageView(buttonImg);
+	Image arcadeImg = new Image("arcade.jpeg.png");
+	ImageView arcade = new ImageView(arcadeImg);
+	
+	Image classicImg = new Image("classic.jpeg.png");
+	ImageView classic = new ImageView(classicImg);
+	
+	arcade.setFitWidth(400);
+	arcade.setFitHeight(150);
+	
+	classic.setFitWidth(400);
+	classic.setFitHeight(150);
 	
 	background.setFitWidth(1080);
 	background.setFitHeight(720);
@@ -36,23 +46,23 @@ public void prepareScene()
 	//button.setFitHeight(150);
 	//button.setFitWidth(300);
 	
-	Button classic = new Button("Classic Mode");
-	Button arcade = new Button("Arcade Mode");
+	//Button classic = new Button("Classic Mode");
+	//Button arcade = new Button("Arcade Mode");
 	//newgame.setGraphic(button);
 	
-	VBox vb = new VBox(100);
-	vb.setPadding(new Insets(200, 100, 500, 500));
-	vb.getChildren().addAll(classic,arcade);
+	HBox hb = new HBox(100);
+	hb.setPadding(new Insets(300, 100, 100, 100));
+	hb.getChildren().addAll(classic,arcade);
 	
-	root.getChildren().addAll(background,vb);
+	root.getChildren().addAll(background,hb);
 	scene = new Scene(root,1080,720);
 	
-	classic.setOnAction(e->
+	classic.setOnMouseClicked(e->
 	{
 		stage.setScene(classicGUI.getScene());
 	});
 	
-	arcade.setOnAction(e->
+	arcade.setOnMouseClicked(e->
 	{
 		stage.setScene(arcadeGUI.getScene());
 	});
