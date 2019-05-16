@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 public class ClassicMode implements GameMode {
-
+ int lives=3;
     @Override
     public ArrayList<IDrops> createDrops() {
-        ArrayList<IDrops> drops= new ArrayList<IDrops>();
+        ArrayList<IDrops> Drops= new ArrayList<IDrops>();
         FruitFactory factory = new FruitFactory();
-        drops.add(factory.getFruit("apple"));
-        drops.add(factory.getFruit("banana"));
-        drops.add(factory.getFruit("watermelon"));
-        drops.add(new Bomb());
-        drops.add(new FatalBomb());
-        return drops;
+        Drops.add(factory.getFruit("apple"));
+        Drops.add(factory.getFruit("banana"));
+        Drops.add(factory.getFruit("watermelon"));
+        Drops.add(Bomb.getInstance());
+        Drops.add(FatalBomb.getInstance());
+        return Drops;
     }
 
     @Override

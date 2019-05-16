@@ -19,6 +19,4 @@ public class ArcadeMode implements GameMode {
             return true;
         else return false;
     }
-
-
 }

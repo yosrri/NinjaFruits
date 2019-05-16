@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.animation.Animation.Status;
@@ -16,9 +15,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.*;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -41,35 +38,27 @@ public class GUI extends Application{
     Label lifeLabel;
     Label missedLabel;
     MediaPlayer mediaPlayer;
-    Controller controller;
-    GameMode firstMode;
-	public ImageView fruitDrops() {
-		controller = new Controller();
-		firstMode=new ClassicMode();
-		ArrayList<IDrops> drops = new ArrayList<>();
-		drops=controller.newgame(firstMode);
-		IDrops anon= drops.get((int)(0+Math.random()*5));
-		ImageView dropImg = new ImageView(SwingFXUtils.toFXImage(anon.getImage(),null));
-		
-		dropImg.setFitHeight(70);
-		dropImg.setFitWidth(70);
-		dropImg.setX(50+Math.random()*750);
-		dropImg.setY(-100);
+
+	/*public ImageView fruitDrops(ArrayList<String>fruits) {
+		FruitFactory factory = new FruitFactory();
+		IDrops anon = factory.getFruit(fruits.get((int)(0+Math.random()*3)));
+		ImageView fruitImg = new ImageView(SwingFXUtils.toFXImage(anon.getImage(),null));
+	
+		fruitImg.setFitHeight(70);
+		fruitImg.setFitWidth(70);
+		fruitImg.setX(50+Math.random()*750);
+		fruitImg.setY(-100);
 		int timelab = 10000;
 		Duration duration = Duration.millis(timelab);
 		timelab-=1000;
-    	TranslateTransition transition = new TranslateTransition(duration ,dropImg);
-    	TranslateTransition x = new TranslateTransition(duration ,dropImg);
+    	TranslateTransition transition = new TranslateTransition(duration ,fruitImg);
+    	TranslateTransition x = new TranslateTransition(duration ,fruitImg);
     	transition.setDelay(Duration.millis(Math.random()*3000));
-    	transition.setByY(750);
+    	transition.setByY(800);
     	transition.setAutoReverse(false);
     	transition.setOnFinished(e->{
-        	//missed++;
-        	//life--;
-    		if(dropImg.isVisible())
-            {
-           	missed++;
-            }
+        	missed++;
+        	life--;
         	missedLabel.setText("Missed: "+toString().valueOf(missed));
         	lifeLabel.setText("lifes: "+toString().valueOf(life));
         	});
@@ -77,30 +66,21 @@ public class GUI extends Application{
         	EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() { 
                 @Override 
                 public void handle(MouseEvent e) { 
-                	dropImg.setTranslateY(700); 	
+                	fruitImg.setTranslateY(700); 	
                    score++;
-                 //  missed--; 
+                   missed--; 
                    life++;
                    System.out.println(score);
                    scoreLabel.setText("Score: "+toString().valueOf(score));
-                   dropImg.setVisible(false);
+                   fruitImg.setVisible(false);
+                  
                 } 
              };  
-             dropImg.addEventFilter(MouseEvent.MOUSE_ENTERED, eventHandler); 
-             dropImg.setOnMouseMoved(e->
+             fruitImg.addEventFilter(MouseEvent.MOUSE_ENTERED, eventHandler); 
+             fruitImg.setOnMouseMoved(e->
              { sliceSound();            	 
              });
-             
-             if(firstMode.endingCondition(missed))
-             {
-            	 	//transition.pause();
-            	 	transition.stop();
-            	 	Alert alert = new Alert(AlertType.WARNING);
-					alert.setTitle("Game Over!!");
-					alert.setHeaderText("GOOD LUCK NEXT TIME");
-					alert.showAndWait();
-             }
-	return dropImg;
+	return fruitImg;
 }
 	public ImageView bombDrops() {
 		Bomb x = new Bomb();
@@ -139,6 +119,7 @@ public class GUI extends Application{
 	public void start(Stage primaryStage) {
 		  
 		ArrayList<String> x = new ArrayList<>();
+		//
 
 		scoreLabel= new Label("Score: "+"0");
 		missedLabel= new Label("Missed: "+"0");
@@ -149,7 +130,7 @@ public class GUI extends Application{
 		x.add("fatalbomb");
 		lifeLabel= new Label("Lifes: "+"3");
 		for(int i=0;i<10;i++)
-			drop.add(fruitDrops());
+			drop.add(fruitDrops(x));
 		for(int i=0;i<2;i++)
 			drop.add(bombDrops());
 		Pane pane = new Pane();
@@ -170,10 +151,11 @@ public class GUI extends Application{
 		}
 		public void sliceSound()
 		{
-			String path = "C:\\Users\\OMAR\\Desktop\\Images\\Slice.mp3";
+			String path = "E:\\Fruitnin\\src\\Slice.mp3";
 			Media media = new Media(new File(path).toURI().toString());
 			mediaPlayer = new MediaPlayer(media);
 			mediaPlayer.setAutoPlay(true);
-		}
-	}
+		}*/
+	public void start(Stage primaryStage) {}
+}
 

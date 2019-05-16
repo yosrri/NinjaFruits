@@ -1,20 +1,13 @@
 package wtvr;
 
 public class FruitFactory {
-public IDrops getFruit(String fruit)
-{
-	if(fruit.equalsIgnoreCase("apple"))
-	{
-		return new Apple();
+	public IDrops getFruit(String fruit) {
+		if (fruit.equalsIgnoreCase("apple"))
+			return Apple.getInstance();
+		if (fruit.equalsIgnoreCase("banana"))
+			return Banana.getInstance();
+		else if (fruit.equalsIgnoreCase("watermelon"))
+			return Watermelon.getInstance();
+  else return null;
 	}
-	 if(fruit.equalsIgnoreCase("banana"))
-	{
-		return new Banana();
-	}
-	else if(fruit.equalsIgnoreCase("watermelon"))
-	{
-		return new Watermelon();
-	}
-	return null;
-}
 }

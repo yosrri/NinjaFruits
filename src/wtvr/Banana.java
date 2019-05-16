@@ -1,6 +1,7 @@
 package wtvr;
 
-import javafx.scene.image.Image;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.ImageView;
 
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
@@ -9,23 +10,53 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class Banana implements IDrops{
-
-	@Override
-	public BufferedImage getImage(){
-		BufferedImage img = null;
+public class Banana extends Fruits implements IDrops {
 
 
-			File file =  new File("C:\\Users\\OMAR\\Desktop\\Images\\fruit0.png");
-			try {
-				img = ImageIO.read(file);
-			} catch (IIOException e) {
-				e.printStackTrace();
-			}catch(IOException e) {
+    private static  Banana INSTANCE ;
+    private boolean slice = false;
 
-			}
+    private Banana() {}
 
-			return img;
-	}
 
+    public static Banana getInstance() {
+        if(INSTANCE==null)
+            INSTANCE=new Banana();
+        return INSTANCE;
+
+    }
+
+    @Override
+    public boolean isSlice() {
+        return slice;
+    }
+
+    public void setSlice(boolean slice) {
+        this.slice = slice;
+    }
+
+    public int rand(int min, int max) {
+        return (int) (Math.random() * max + min);
+    }
+
+    @Override
+    public ImageView getImage() {
+        BufferedImage img = null;
+
+        File file = new File("C:\\Users\\OMAR\\Desktop\\NinjaFruits-ZawawyUpdates\\src\\fruit1.png");
+        try {
+            img = ImageIO.read(file);
+        } catch (IIOException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+
+        }
+        ImageView dropImg = new ImageView(SwingFXUtils.toFXImage(
+                img, null));
+        dropImg.setFitHeight(70);
+        dropImg.setFitWidth(70);
+        dropImg.setLayoutX(rand(0, 400));
+        return dropImg;
+
+    }
 }
