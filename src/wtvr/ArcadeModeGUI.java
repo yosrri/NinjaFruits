@@ -22,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -43,6 +44,8 @@ public class ArcadeModeGUI{
     Timeline timeline;
     Pane root = new Pane();
     List drop = new ArrayList();
+    List obj= new ArrayList();
+    IDrops temp;
     double mouseX;
     double mouseY;
     double speed;
@@ -56,6 +59,7 @@ public class ArcadeModeGUI{
     MediaPlayer mediaPlayer;
     Controller controller;
     GameMode secondMode;
+    int seconds=0;
 
     public ArcadeModeGUI(Stage stage)
     {
@@ -68,20 +72,28 @@ public class ArcadeModeGUI{
         timeLabel = new Label("Time:"+String.valueOf(seconds)+" seconds");
         scoreLabel= new Label("Score: "+String.valueOf(score));
   
+        Image backgroundImg = new Image("mode1.jpg");
+    	ImageView background = new ImageView(backgroundImg);
+        
+        
         missed = 0;
         score =0;
         
         speed = 1;
         falling = 500;
-        
+        root.getChildren().add(background);
  
 
          timeline = new Timeline(new KeyFrame(Duration.millis(falling), event -> {
 
             speed += falling / 3000;
             int randomNo=(int)(0 + Math.random() * 3);
-            drop.add(controller.newgame(secondMode).get(randomNo).getImage());
-     
+
+             temp=controller.newgame(secondMode).get(randomNo);
+            obj.add(temp);
+            drop.add(temp.getImage());
+
+           
             root.getChildren().add(((Node)drop.get(drop.size() -1)));
         }));
 
@@ -92,6 +104,7 @@ public class ArcadeModeGUI{
 
             @Override
             public void handle(long arg0) {
+            	
                 gameUpdate();
             }
 
@@ -102,47 +115,54 @@ public class ArcadeModeGUI{
         vb.getChildren().addAll(scoreLabel,lblMissed,timeLabel);
         root.getChildren().addAll(vb);
 
-         scene = new Scene(root, 750, 700);
+         scene = new Scene(root, 1024, 683);
 
         scene.setOnMouseMoved(e -> {
             mouseX = e.getX();
             mouseY=e.getY();
         });
     }
-    int seconds=0;		//seconds counter
+//     seconds=0;		//seconds counter
     Timer heraTimer= new Timer();
     TimerTask task = new TimerTask()
     {
 
         @Override
         public void run() {
-        	if(controller.gameEnder(seconds))
+        	
+        	if(seconds==60)
         	{
         		task.cancel();
-        		timer.stop();
-        		timeline.stop();
-//        		Alert alert = new Alert(AlertType.WARNING);
-//				alert.setTitle("Game Over!!");
-//				alert.setHeaderText("GOOD LUCK NEXT TIME");
-//				alert.showAndWait();
         	}
         	else
-        	{
         		 seconds++;
                //  System.out.println(seconds);
-        	}
+        	
         }
     };
     public void start()
     {
     	heraTimer.scheduleAtFixedRate(task, 1000, 1000);
     	 timeLabel.setText("Time:"+String.valueOf(seconds)+" seconds");
+    	 
     }
     public int rand(int min, int max) {
         return (int)(Math.random() * max + min);
     }
     public void gameUpdate(){
     timeLabel.setText("Time:"+String.valueOf(seconds)+" seconds");
+    if(controller.gameEnder(seconds))
+	{
+		task.cancel();
+		timer.stop();
+		timeline.stop();
+//		AlertBox box = new AlertBox();
+//		box.display("koko", "koko");
+//		Alert alert = new Alert(AlertType.WARNING);
+//		alert.setTitle("Game Over!!");
+//		alert.setHeaderText("GOOD LUCK NEXT TIME");
+//		alert.showAndWait();
+	}
     
 //        cont.setLayoutX(mouseX);
 //        cont.setLayoutY(mouseY);
@@ -162,26 +182,29 @@ public class ArcadeModeGUI{
     	
         for(int i = 0; i < drop.size(); i++) {
             ((ImageView) drop.get(i)).setLayoutY(((ImageView) drop.get(i)).getLayoutY() + speed + ((ImageView) drop.get(i)).getLayoutY() / 150 );
-            //if get droped into square
             if((((ImageView) drop.get(i)).getLayoutX() < mouseX && ((ImageView) drop.get(i)).getLayoutX()+100 >= mouseX) &&
                     ((ImageView) drop.get(i)).getLayoutY() < mouseY&&((ImageView) drop.get(i)).getLayoutY()+100>=mouseY ) {
-                root.getChildren().remove(((ImageView) drop.get(i)));
+            	System.out.println(obj.get(i)+"     "+obj.get(i));
+            	root.getChildren().remove(((ImageView) drop.get(i)));
                 score+=1;
+               
                 drop.remove(i);
+                obj.remove(i);
                 sliceSound();
                 scoreLabel.setText("Score: "+String.valueOf(score));
             }
             //if missed remove
-            else if(((ImageView) drop.get(i)).getLayoutY() >= 750) {
+            else if(((ImageView) drop.get(i)).getLayoutY() >= 1024) {
                 root.getChildren().remove(((ImageView) drop.get(i)));
                 drop.remove(i);
+                obj.remove(i);
                 missed += 1;
                 lblMissed.setText("Missed: " + String.valueOf(missed));
             }
         }
     }
     public void sliceSound() {
-        String path = "C:\\Users\\OMAR\\Desktop\\NinjaFruits-ZawawyUpdates\\src\\Slice.mp3";
+        String path = "C:/Users/OMAR/Desktop/NinjaFruits-TharwatUpdates/Herra/src/Slice.mp3";
         Media media = new Media(new File(path).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setAutoPlay(true);

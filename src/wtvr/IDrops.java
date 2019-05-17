@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 
 public interface IDrops {
     public ImageView getImage();
+    public ImageView getHalfImage();
     public boolean isSlice();
     public void setSlice(boolean slice);
 }

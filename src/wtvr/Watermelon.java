@@ -41,7 +41,25 @@ public class Watermelon implements IDrops {
     public ImageView getImage() {
         BufferedImage img = null;
 
-        File file = new File("C:\\Users\\OMAR\\Desktop\\NinjaFruits-ZawawyUpdates\\src\\fruit2.png");
+        File file = new File("C:/Users/OMAR/Desktop/NinjaFruits-TharwatUpdates/Herra/src/fruit2.png");
+        try {
+            img = ImageIO.read(file);
+        } catch (IIOException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+
+        }
+        ImageView dropImg = new ImageView(SwingFXUtils.toFXImage(
+                img, null));
+        dropImg.setFitHeight(70);
+        dropImg.setFitWidth(70);
+        dropImg.setLayoutX(rand(0, 900));
+        return dropImg;
+    }
+    public ImageView getHalfImage() {
+        BufferedImage img = null;
+
+        File file = new File("/Users/ahmedtharwatwagdy/Documents/java/workspace/Herra/src/fruit1S.png");
         try {
             img = ImageIO.read(file);
         } catch (IIOException e) {
@@ -55,6 +73,7 @@ public class Watermelon implements IDrops {
         dropImg.setFitWidth(70);
         dropImg.setLayoutX(rand(0, 700));
         return dropImg;
+
     }
 }
 

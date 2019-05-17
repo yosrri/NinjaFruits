@@ -4,10 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-
-
+import com.sun.scenario.effect.impl.prism.PrImage;
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -17,7 +14,10 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -34,6 +34,7 @@ public class ClassicModeGUI {
     AnimationTimer timer;
     Pane root = new Pane();
     List drop = new ArrayList();
+    List obj= new ArrayList();
     Timeline timeline;
     double mouseX;
     double mouseY;
@@ -74,19 +75,22 @@ public class ClassicModeGUI {
         lives=new Label("Lives:"+String.valueOf(lifes));
         scoreLabel = new Label("Score: "+String.valueOf(score));
         comboLabel = new Label("Combo: "+String.valueOf(combo));
+        Image backgroundImg = new Image("mode1.jpg");
+    	ImageView background = new ImageView(backgroundImg);
         
         missed = 0;
 
         speed = 1;
         falling = 500;
         
-        
+        root.getChildren().add(background);
 
          timeline = new Timeline(new KeyFrame(Duration.millis(falling), event -> {
 
             speed += falling / 3000;
              randomNo=(int)(0 + Math.random() * 5);
             drop.add(controller.newgame(firstMode).get(randomNo).getImage());
+            obj.add(controller.newgame(firstMode).get(randomNo));
      
             root.getChildren().add(((Node)drop.get(drop.size() -1)));
         }));
@@ -110,7 +114,7 @@ public class ClassicModeGUI {
 
         root.getChildren().addAll(vb);
 
-         scene = new Scene(root, 750, 700);
+         scene = new Scene(root,1024, 683);
 
         scene.setOnMouseMoved(e -> {
             mouseX = e.getX();
@@ -127,6 +131,18 @@ public class ClassicModeGUI {
          lives.setText("Lifes: " + String.valueOf(lifes));
          scoreLabel.setText("Score: "+String.valueOf(score));
          comboLabel.setText("Combo: "+String.valueOf(combo));
+         if(controller.gameEnder(lifes))
+     	{
+         	lifes=0;
+     		timer.stop();
+     		timeline.stop();
+//     		Alert alert = new Alert(AlertType.WARNING);
+//				alert.setTitle("Game Over!!");
+//				alert.setHeaderText("GOOD LUCK NEXT TIME");
+//				alert.showAndWait();
+//     		AlertBox box = new AlertBox();
+//     		box.display("Game Over", "Good luck Next Time!!");
+     	}
 //        cont.setLayoutX(mouseX);
 //        cont.setLayoutY(mouseY);
 //        EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
@@ -149,6 +165,14 @@ public class ClassicModeGUI {
             if((((ImageView) drop.get(i)).getLayoutX() < mouseX && ((ImageView) drop.get(i)).getLayoutX()+100 >= mouseX) &&
                     ((ImageView) drop.get(i)).getLayoutY() < mouseY&&((ImageView) drop.get(i)).getLayoutY()+100>=mouseY ) {
                 root.getChildren().remove(((ImageView) drop.get(i)));
+                System.out.println(obj.get(i));
+                if(obj.get(i) instanceof Bomb){
+                	 lifes-=1;
+                }
+                if(obj.get(i) instanceof FatalBomb){
+               	 lifes=0;
+               }
+                obj.remove(i);
                 drop.remove(i);
                 sliceSound();
                 score+=1;
@@ -156,29 +180,26 @@ public class ClassicModeGUI {
             }
 
             //if missed remove
-            else if(((ImageView) drop.get(i)).getLayoutY() >= 750) {
+            else if(((ImageView) drop.get(i)).getLayoutY() >= 1024) {
                 root.getChildren().remove(((ImageView) drop.get(i)));
+                if(obj.get(i) instanceof Bomb){
+               	 continue;
+               }
+               if(obj.get(i) instanceof FatalBomb){
+            	   continue;
+              }
                 drop.remove(i);
+                obj.remove(i);
                 missed += 1;
                 lifes-=1;
-                
                 combo=0;
                
-                if(controller.gameEnder(lifes))
-            	{
-                	lifes=0;
-            		timer.stop();
-            		timeline.stop();
-//            		Alert alert = new Alert(AlertType.WARNING);
-//    				alert.setTitle("Game Over!!");
-//    				alert.setHeaderText("GOOD LUCK NEXT TIME");
-//    				alert.showAndWait();
-            	}
+               
             }
         }
     }
     public void sliceSound() {
-        String path = "C:\\Users\\OMAR\\Desktop\\NinjaFruits-ZawawyUpdates\\src\\Slice.mp3";
+        String path = "C:/Users/OMAR/Desktop/NinjaFruits-TharwatUpdates/Herra/src/Slice.mp3";
         Media media = new Media(new File(path).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setAutoPlay(true);
