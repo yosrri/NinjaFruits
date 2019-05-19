@@ -15,6 +15,7 @@ public class Apple extends Fruits implements IDrops {
 
     private static Apple INSTANCE ;
     private boolean slice = false;
+    private boolean generated = false;
 
     private Apple() {
 
@@ -55,8 +56,15 @@ public class Apple extends Fruits implements IDrops {
                 img, null));
         dropImg.setFitHeight(70);
         dropImg.setFitWidth(70);
-        dropImg.setLayoutX(rand(0, 400));
+        dropImg.setLayoutX(rand(0, 700));
         return dropImg;
 
+    }
+	public void setGenerated(boolean generated) {
+		this.generated = generated;
+	}
+    public boolean isGenerated()
+    {
+    	return this.generated;
     }
 }
