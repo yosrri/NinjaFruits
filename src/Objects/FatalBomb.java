@@ -13,7 +13,8 @@ import java.io.IOException;
 public class FatalBomb implements IDrops {
     private static  FatalBomb INSTANCE ;
     private boolean slice = false;
-
+    private int x;
+    private int y;
     private FatalBomb() {}
 
 
@@ -94,4 +95,33 @@ public class FatalBomb implements IDrops {
         return dropImg;
 
     }
+
+
+	@Override
+	public void setX(int x) {
+		// TODO Auto-generated method stub
+		this.x=x;
+		
+	}
+
+
+	@Override
+	public void setY(int y) {
+		// TODO Auto-generated method stub
+		this.y=y;
+	}
+
+
+	@Override
+	public int setX() {
+		// TODO Auto-generated method stub
+		return x;
+	}
+
+
+	@Override
+	public int setY() {
+		// TODO Auto-generated method stub
+		return y;
+	}
 }

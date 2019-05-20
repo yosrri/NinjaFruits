@@ -65,18 +65,18 @@ public void prepareScene()
 	easy.setOnMouseClicked(e->
 	{
 		classicGUI.prepareScene();
-		stage.setScene(classicGUI.getScene(20000));
+		stage.setScene(classicGUI.getScene(15000));
 	});
 	
 	normal.setOnMouseClicked(e->
 	{
 		classicGUI.prepareScene();
-		stage.setScene(classicGUI.getScene(90000));
+		stage.setScene(classicGUI.getScene(5000));
 	});
 	ninja.setOnMouseClicked(e->
 	{
 		classicGUI.prepareScene();
-		stage.setScene(classicGUI.getScene(3000));
+		stage.setScene(classicGUI.getScene(1500));
 	});
 	
 }

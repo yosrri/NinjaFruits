@@ -1,13 +1,24 @@
 package GUI;
 import java.io.File;
 
+import ControlTheGame.LoadGame;
+import ControlTheGame.SaveGame;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class GuiMain extends Application {
+	static int x;
+	static int y;
    public static void main(String[] args)
    {
-	   launch(args);
+//	   launch(args);
+	   SaveGame save = new SaveGame(5,6);
+	   save.saveProgress();
+	   LoadGame load= new LoadGame(x,y);
+	   load.loadProgress();
+	   System.out.println(x+"   "+y);
+	   
+	   
    }
 	@Override
 	public void start(Stage primaryStage) throws Exception {

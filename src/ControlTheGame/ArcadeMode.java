@@ -32,7 +32,7 @@ public class ArcadeMode implements GameMode {
 
     @Override
     public boolean endingCondition(int time) {
-        if(time==60)
+        if(time==10)
             return true;
         else return false;
     }

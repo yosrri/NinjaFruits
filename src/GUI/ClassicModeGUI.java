@@ -13,6 +13,10 @@ import ControlTheGame.GameMode;
 import Objects.Bomb;
 import Objects.FatalBomb;
 import Objects.IDrops;
+import Sounds.Theme;
+import Sounds.Track1;
+import Sounds.Track2;
+import Sounds.Track3;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ButtonBar;
 import javafx.event.ActionEvent;
@@ -60,14 +64,14 @@ public class ClassicModeGUI {
 	private Label lives;
 	private Label scoreLabel;
 	private Label comboLabel;
-	private int score = 0;
-	private int combo = 0;
+//	private int score = 0;
+//	private int combo = 0;
 	private int bestCombo = 0;
-	private int missed;
+//	private int missed;
 	private int i;
 	private IDrops temp;
 	private int divider;
-	private int lifes = 3;
+//	private int lifes = 3;
 	private int randomNo;
 	private MediaPlayer mediaPlayer;
 	private Controller controller;
@@ -78,10 +82,16 @@ public class ClassicModeGUI {
 	private ButtonType save;
 	private ButtonType load;
 	private ButtonType exit;
+	private MediaPlayer mp;
 
 	Scene scene;
 	Stage stage;
 	MainMenu menu;
+	Theme theme;
+	Track2 track2;
+	Track3 track3;
+//	Track1 t1;
+	
 
 	public ClassicModeGUI(Stage stage) {
 		this.stage = stage;
@@ -100,13 +110,15 @@ public class ClassicModeGUI {
 	    }
 
 	public void prepareScene() {
-
+//theme=theme.getInstance();
+//theme.getMediaPlayer().stop();
 		controller = new Controller();
 		firstMode = new ClassicMode();
-		lblMissed = new Label("Missed:" + String.valueOf(missed));
-		lives = new Label("Lives:" + String.valueOf(lifes));
-		scoreLabel = new Label("Score: " + String.valueOf(score));
-		comboLabel = new Label("Combo: " + String.valueOf(combo));
+		controller.newgame(firstMode);
+		lblMissed = new Label("Missed:" + String.valueOf(controller.getMissed()));
+		lives = new Label("Lives:" + String.valueOf(controller.getGameVariable()));
+		scoreLabel = new Label("Score: " + String.valueOf(controller.getScore()));
+		comboLabel = new Label("Combo: " + String.valueOf(controller.getCombo()));
 
 		// knifeImg = new Image("knife.png");
 		// knife = new ImageView(knifeImg);
@@ -114,8 +126,8 @@ public class ClassicModeGUI {
 		Image backgroundImg = new Image("mode1.jpg");
 		ImageView background = new ImageView(backgroundImg);
 
-		missed = 0;
-		bestCombo = combo;
+//		missed = 0;
+		bestCombo = controller.getCombo();
 
 		speed = 1;
 		falling = 500;
@@ -124,16 +136,21 @@ public class ClassicModeGUI {
 
 		timeline = new Timeline(new KeyFrame(Duration.millis(falling),
 				event -> {
+					
 
 					speed += falling / divider;
 					randomNo = (int) (0 + Math.random() * 5);
 					
 					temp = controller.newgame(firstMode).get(randomNo);
+			
 					obj.add(temp);
 					drop.add(temp.getImage());
 					dropsliced.add(temp.getHalfImage());
 					dropsliced2.add(temp.getSecHalfImage());
 					root.getChildren().add(((Node) drop.get(drop.size() - 1)));
+					if(temp.isSlice())
+				      controller.setMissed(controller.getMissed()+1);
+					
 				}));
 		timeline.setCycleCount(1000);
 		timeline.play();
@@ -208,18 +225,17 @@ public class ClassicModeGUI {
 	}
 
 	public void gameUpdate() {
-		// knife.setFitWidth(100);
-		// knife.setFitHeight(100);
-		// knife.setLayoutX(mouseX-60);
-		// knife.setLayoutY(mouseY-60);
-
-		if (combo > bestCombo)
-			bestCombo = combo;
-		lblMissed.setText("Missed: " + String.valueOf(missed));
-		lives.setText("Lifes: " + String.valueOf(lifes));
-		scoreLabel.setText("Score: " + String.valueOf(score));
-		comboLabel.setText("Combo: " + String.valueOf(combo));
-
+		       theme=theme.getInstance();
+       track2=track2.getInstance();
+       track3=Track3.getInstance();
+		if (controller.getCombo() > bestCombo)
+			bestCombo = controller.getCombo();
+		lblMissed.setText("Missed: " + String.valueOf(controller.getMissed()));
+		lives.setText("Lifes: " + String.valueOf(controller.getGameVariable()));
+		scoreLabel.setText("Score: " + String.valueOf(controller.getScore()));
+		comboLabel.setText("Combo: " + String.valueOf(controller.getCombo()));
+//		mp=sliceSound();
+//		mp.setRate(4);
 		for (int i = 0; i < drop.size(); i++) {
 			((ImageView) drop.get(i)).setLayoutY(((ImageView) drop.get(i))
 					.getLayoutY()
@@ -230,14 +246,17 @@ public class ClassicModeGUI {
 					.get(i)).getLayoutX() + 100 >= mouseX)
 					&& ((ImageView) drop.get(i)).getLayoutY() < mouseY
 					&& ((ImageView) drop.get(i)).getLayoutY() + 100 >= mouseY) {
+//				mp.play();
 				root.getChildren().remove(((ImageView) drop.get(i)));
 //				throwObj((ImageView)drop.get(i));
 				System.out.println(obj.get(i));
 				if (obj.get(i) instanceof Bomb) {
-					lifes -= 1;
+				controller.changeGameVariable(controller.getGameVariable()-1);
 				}
 				else if (obj.get(i) instanceof FatalBomb) {
-					lifes = 0;
+					track2.getMediaPlayer().play();
+					track3.getMediaPlayer().setMute(true);
+					controller.changeGameVariable(0);
 				}
 				else {
 					 ((ImageView) dropsliced.get(i)).setLayoutX(((ImageView) drop.get(i)).getLayoutX());
@@ -245,7 +264,7 @@ public class ClassicModeGUI {
 						 
 						((ImageView) dropsliced2.get(i)).setLayoutX(((ImageView) drop.get(i)).getLayoutX()+50);
 							((ImageView) dropsliced2.get(i)).setLayoutY(((ImageView) drop.get(i)).getLayoutY()+30);
-							
+							((IDrops)obj.get(i)).setSlice(true);
 						
 						root.getChildren().add((ImageView)dropsliced.get(i));
 						root.getChildren().add((ImageView)dropsliced2.get(i));
@@ -257,18 +276,28 @@ public class ClassicModeGUI {
 				drop.remove(i);
 				dropsliced.remove(i);
 				dropsliced2.remove(i);
+//				slice=slice.getInstance();
+//				slice.getMediaPlayer().play();
+//				slice.getMediaPlayer().setAutoPlay(true);
+//				slice.getMediaPlayer().stop();
 				sliceSound();
-				score += 1;
-				combo += 1;
-				if (controller.gameEnder(lifes)) {
-					lifes = 0;
+//				alertSound();
+				controller.setScore(controller.getScore()+1);
+				controller.setCombo(controller.getCombo()+1);
+//				score += 1;
+//				combo += 1;
+				if (controller.gameEnder(controller.getGameVariable())) {
+					theme.getMediaPlayer().stop();
+					track3.getMediaPlayer().play();
+//					lifes = 0;
+					controller.changeGameVariable(0);
 					timer.stop();
 					timeline.stop();
 					Alert alert = new Alert(Alert.AlertType.INFORMATION);
 					alert.setTitle("Game Over!!");
 					alert.setHeaderText("GOOD LUCK NEXT TIME\n"
-							+ "Your Score Is " + score + "\nYour Missed Are "
-							+ missed + "\nYour Highest Combo Is " + bestCombo);
+							+ "Your Score Is " + controller.getScore() + "\nYour Missed Are "
+							+ controller.getMissed() + "\nYour Highest Combo Is " + bestCombo);
 					alert.show();
 					alert.setOnHidden(e -> {
 						stage.close();
@@ -277,31 +306,40 @@ public class ClassicModeGUI {
 			}
 
 			// if missed remove
-			else if (((ImageView) drop.get(i)).getLayoutY() >= 1024) {
+			else if (((ImageView) drop.get(i)).getLayoutY() >= 1024&& !((IDrops)obj.get(i)).isSlice()) {
 				root.getChildren().remove(((ImageView) drop.get(i)));
+
 				if (obj.get(i) instanceof Bomb) {
 					continue;
 				}
 				if (obj.get(i) instanceof FatalBomb) {
 					continue;
 				}
+				
 				drop.remove(i);
 				obj.remove(i);
 				dropsliced.remove(i);
 				dropsliced2.remove(i);
-				missed += 1;
-				lifes -= 1;
-				combo = 0;
-				if (controller.gameEnder(lifes)) {
-					lifes = 0;
+				controller.setMissed(controller.getMissed()+1);
+//				missed += 1;
+				controller.setMissed(controller.getMissed()+1);
+//				lifes -= 1;
+				controller.changeGameVariable(controller.getGameVariable()-1);
+				controller.setCombo(0);
+//				combo = 0;
+				if (controller.gameEnder(controller.getGameVariable())) {
+					theme.getMediaPlayer().stop();
+//					lifes = 0;
+					controller.changeGameVariable(0);
 					timer.stop();
 					timeline.stop();
 					Alert alert = new Alert(Alert.AlertType.INFORMATION);
 					alert.setTitle("Game Over!!");
 					alert.setHeaderText("GOOD LUCK NEXT TIME\n"
-							+ "Your Score Is " + score + "\nYour Missed Are "
-							+ missed + "\nYour Highest Combo Is " + bestCombo);
+							+ "Your Score Is " + controller.getScore() + "\nYour Missed Are "
+							+ controller.getMissed()+ "\nYour Highest Combo Is " + bestCombo);
 					alert.show();
+//					alertSound();
 					alert.setOnHidden(e -> {
 						stage.close();
 					});
@@ -315,8 +353,19 @@ public class ClassicModeGUI {
 		String path = "/Users/ahmedtharwatwagdy/Documents/java/workspace/Fruit Ninja/src/Slice.mp3";
 		Media media = new Media(new File(path).toURI().toString());
 		mediaPlayer = new MediaPlayer(media);
+		mediaPlayer.setStartTime(Duration.ONE);
 		mediaPlayer.setAutoPlay(true);
+//		return mediaPlayer;
 	}
+//	public void alertSound() {
+//		String path = "/Users/ahmedtharwatwagdy/Documents/java/workspace/Fruit Ninja/src/yagada3.m4a";
+//		Media media = new Media(new File(path).toURI().toString());
+//		mediaPlayer = new MediaPlayer(media);
+////		mediaPlayer.setVolume(80);
+////		mediaPlayer.setStartTime(Duration.ONE);
+//		mediaPlayer.setAutoPlay(true);
+//		
+//	}
 
 	public Scene getScene(int divider) {
 		this.divider = divider;

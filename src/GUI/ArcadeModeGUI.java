@@ -12,6 +12,8 @@ import ControlTheGame.ArcadeMode;
 import ControlTheGame.Controller;
 import ControlTheGame.GameMode;
 import Objects.IDrops;
+import Sounds.Theme;
+import Sounds.Track1;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -60,14 +62,18 @@ public class ArcadeModeGUI {
 	private Label scoreLabel;
 	private Label comboLabel;
 	private int missed;
-	private int score;
+//	private int score;
 	private int i;
-	private int combo = 0;
+//	private int combo = 0;
 	private int bestCombo = 0;
 	private MediaPlayer mediaPlayer;
 	private Controller controller;
 	private GameMode secondMode;
 	private int seconds = 0;
+	Theme theme;
+//	Surprise surprise;
+	Track1 track1;
+	
 
 	public ArcadeModeGUI(Stage stage) {
 		this.stage = stage;
@@ -81,19 +87,21 @@ public class ArcadeModeGUI {
 	    	
 	    }
 	public void prepareScene() {
+//		theme=theme.getInstance();
+//		theme.getMediaPlayer().stop();
 		controller = new Controller();
 		secondMode = new ArcadeMode();
 		
-		comboLabel = new Label("Combo: " + String.valueOf(combo));
+		comboLabel = new Label("Combo: " + String.valueOf(controller.getCombo()));
 		lblMissed = new Label("Missed:");
 		timeLabel = new Label("Time:" + String.valueOf(seconds) + " seconds");
-		scoreLabel = new Label("Score: " + String.valueOf(score));
+		scoreLabel = new Label("Score: " + String.valueOf(controller.getScore()));
 
 		Image backgroundImg = new Image("mode1.jpg");
 		ImageView background = new ImageView(backgroundImg);
 
 		missed = 0;
-		score = 0;
+//		score = 0;
 
 		speed = 1;
 		falling = 500;
@@ -106,6 +114,7 @@ public class ArcadeModeGUI {
 					int randomNo = (int) (0 + Math.random() * 3);
 
 					temp = controller.newgame(secondMode).get(randomNo);
+					
 					obj.add(temp);
 					drop.add(temp.getImage());
 					dropsliced.add(temp.getHalfImage());
@@ -157,7 +166,14 @@ public class ArcadeModeGUI {
 
 		@Override
 		public void run() {
-
+//			  EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
+//		          @Override
+//		          public void handle(MouseEvent e) {
+//		          sliceSound();
+//
+//		          }
+//		       };
+//		       root.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
 			if (controller.gameEnder(seconds)) {
 				task.cancel();
 			} else {
@@ -167,6 +183,7 @@ public class ArcadeModeGUI {
 	};
 
 	public void start() {
+	
 		heraTimer.scheduleAtFixedRate(task, 1000, 1000);
 	}
 
@@ -175,10 +192,14 @@ public class ArcadeModeGUI {
 	}
 
 	public void gameUpdate() {
-		if (combo > bestCombo)
-			bestCombo = combo;
-		scoreLabel.setText("Score: " + String.valueOf(score));
-		comboLabel.setText("Combo: " + String.valueOf(combo));
+	  
+		theme=theme.getInstance();
+//		surprise=surprise.getInstance();
+		track1=track1.getInstance();
+		if (controller.getCombo() > bestCombo)
+			bestCombo = controller.getCombo();
+		scoreLabel.setText("Score: " + String.valueOf(controller.getScore()));
+		comboLabel.setText("Combo: " + String.valueOf(controller.getCombo()));
 		timeLabel.setText("Time:" + String.valueOf(seconds) + " seconds");
 		lblMissed.setText("Missed: " + String.valueOf(missed));
 
@@ -207,23 +228,30 @@ public class ArcadeModeGUI {
 				root.getChildren().add((ImageView)dropsliced2.get(i));
 				throwObj((ImageView)dropsliced.get(i));
 				throwObj((ImageView)dropsliced2.get(i));
-				score += 1;
-				combo+=1;
-
+//				score += 1;
+				controller.setScore(controller.getScore()+1);
+//				combo+=1;
+				controller.setCombo(controller.getCombo()+1);
+//				((IDrops)drop.get(i)).setSlice(true);
 				drop.remove(i);
 				obj.remove(i);
 				dropsliced.remove(i);
 				dropsliced2.remove(i);
+//				slice=slice.getInstance();
+//				slice.getMediaPlayer().play();
 				sliceSound();
-				scoreLabel.setText("Score: " + String.valueOf(score));
+				scoreLabel.setText("Score: " + String.valueOf(controller.getScore()));
 				if (controller.gameEnder(seconds)) {
+					theme.getMediaPlayer().stop();
+//					surprise.getMediaPlayer().play();
+					track1.getMediaPlayer().play();
 					task.cancel();
 					timer.stop();
 					timeline.stop();
 					Alert alert = new Alert(Alert.AlertType.INFORMATION);
 					alert.setTitle("Game Over!!");
 					alert.setHeaderText("GOOD LUCK NEXT TIME\n"
-							+ "Your Score Is " + score + "\nYour Missed Are "
+							+ "Your Score Is " + controller.getScore() + "\nYour Missed Are "
 							+ missed + "\nYour Highest Combo Is " + bestCombo);
 					alert.show();
 					alert.setOnHidden(e -> {
@@ -240,23 +268,28 @@ public class ArcadeModeGUI {
 				dropsliced2.remove(i);
 
 				missed += 1;
-				combo=0;
+//				combo=0;
+				controller.setCombo(0);
 				
 				if (controller.gameEnder(seconds)) {
+					theme.getMediaPlayer().stop();
+//					surprise.getMediaPlayer().play();
+					track1.getMediaPlayer().play();
 					task.cancel();
 					timer.stop();
 					timeline.stop();
 					Alert alert = new Alert(Alert.AlertType.INFORMATION);
 					alert.setTitle("Game Over!!");
 					alert.setHeaderText("GOOD LUCK NEXT TIME\n"
-							+ "Your Score Is " + score + "\nYour Missed Are "
+							+ "Your Score Is " + controller.getScore() + "\nYour Missed Are "
 							+ missed + "\nYour Highest Combo Is " + bestCombo);
-					alert.show();
+					alert.show();					
 					alert.setOnHidden(e -> {
 					stage.close();
 					});
 				}
 			}
+		
 		}
 	}
 	public void sliceSound() {
@@ -265,6 +298,7 @@ public class ArcadeModeGUI {
 		mediaPlayer = new MediaPlayer(media);
 		mediaPlayer.setAutoPlay(true);
 	}
+
 	public Scene getScene() {
 		return scene;
 	}

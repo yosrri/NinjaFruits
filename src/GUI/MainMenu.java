@@ -1,6 +1,7 @@
 package GUI;
 import java.io.File;
 
+import Sounds.Theme;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -22,13 +23,18 @@ ClassicModeGUI classicGUI ;
 ArcadeModeGUI arcadeGUI;
 Difficulty diff;
 MediaPlayer mediaPlayer;
+Theme theme;
+
 public MainMenu(Stage stage)
 {
 	this.stage=stage;
 }
 public void prepareScene()
 {
-	themeSound();
+	theme = theme.getInstance();
+	theme.getMediaPlayer().play();
+	
+//	themeSound();
 	
 	Group root = new Group();
 	
@@ -92,10 +98,11 @@ public void setDifficulty(Difficulty diff)
 	this.diff=diff;
 }
 
-public void themeSound() {
-	String path = "/Users/ahmedtharwatwagdy/Documents/java/workspace/Fruit Ninja/src/theme.mp3";
-	Media media = new Media(new File(path).toURI().toString());
-	mediaPlayer = new MediaPlayer(media);
-	mediaPlayer.setAutoPlay(true);
-}
+//public MediaPlayer themeSound() {
+//	String path = "/Users/ahmedtharwatwagdy/Documents/java/workspace/Fruit Ninja/src/theme.mp3";
+//	Media media = new Media(new File(path).toURI().toString());
+//	mediaPlayer = new MediaPlayer(media);
+////	mediaPlayer.setAutoPlay(true);
+//	return mediaPlayer;
+//}
 }
