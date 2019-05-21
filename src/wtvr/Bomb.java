@@ -53,7 +53,26 @@ public class Bomb implements IDrops {
                 img, null));
         dropImg.setFitHeight(70);
         dropImg.setFitWidth(70);
-        dropImg.setLayoutX(rand(0, 400));
+        dropImg.setLayoutX(rand(0, 900));
         return dropImg;
+    }
+    public ImageView getHalfImage() {
+        BufferedImage img = null;
+
+        File file = new File("/Users/ahmedtharwatwagdy/Documents/java/workspace/Fruit Ninja/src/fruit1S.png");
+        try {
+            img = ImageIO.read(file);
+        } catch (IIOException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+
+        }
+        ImageView dropImg = new ImageView(SwingFXUtils.toFXImage(
+                img, null));
+        dropImg.setFitHeight(70);
+        dropImg.setFitWidth(70);
+        dropImg.setLayoutX(rand(0, 700));
+        return dropImg;
+
     }
 }
