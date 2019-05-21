@@ -14,7 +14,8 @@ import java.io.IOException;
 public class Bomb implements IDrops {
     private static  Bomb INSTANCE ;
     private boolean slice = false;
-
+    private int x;
+    private int y;
     private Bomb() {}
 
 
@@ -42,7 +43,7 @@ public class Bomb implements IDrops {
     public ImageView getImage() {
         BufferedImage img = null;
 
-        File file = new File("C:/Users/OMAR/Desktop/NinjaFruits-TharwatUpdates/Herra/src/bomb0.png");
+        File file = new File("C:/Users/OMAR/Desktop/Images/bomb0.png");
         try {
             img = ImageIO.read(file);
         } catch (IIOException e) {
@@ -60,7 +61,7 @@ public class Bomb implements IDrops {
     public ImageView getHalfImage() {
         BufferedImage img = null;
 
-        File file = new File("/Users/ahmedtharwatwagdy/Documents/java/workspace/Herra/src/fruit1S.png");
+        File file = new File("C:/Users/OMAR/Desktop/Images/fruit1S.png");
         try {
             img = ImageIO.read(file);
         } catch (IIOException e) {
@@ -76,4 +77,51 @@ public class Bomb implements IDrops {
         return dropImg;
 
     }
+    public ImageView getSecHalfImage() {
+        BufferedImage img = null;
+
+        File file = new File("C:/Users/OMAR/Desktop/Images/fruit1S.png");
+        try {
+            img = ImageIO.read(file);
+        } catch (IIOException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+
+        }
+        ImageView dropImg = new ImageView(SwingFXUtils.toFXImage(
+                img, null));
+        dropImg.setFitHeight(70);
+        dropImg.setFitWidth(70);
+        dropImg.setLayoutX(rand(0, 700));
+        return dropImg;
+
+    }
+
+
+	@Override
+	public void setX(int x) {
+		this.x=x;
+		
+	}
+
+
+	@Override
+	public void setY(int y) {
+	 this.y=y;
+		
+	}
+
+
+	@Override
+	public int setX() {
+		// TODO Auto-generated method stub
+		return x;
+	}
+
+
+	@Override
+	public int setY() {
+		// TODO Auto-generated method stub
+		return y;
+	}
 }

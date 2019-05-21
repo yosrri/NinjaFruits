@@ -6,8 +6,16 @@ import Objects.FruitFactory;
 import Objects.IDrops;
 
 public class ArcadeMode implements GameMode {
-
+    private int score=0;
     private int time;
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 
     public int getGameVariable() {
         return time;
@@ -32,7 +40,7 @@ public class ArcadeMode implements GameMode {
 
     @Override
     public boolean endingCondition(int time) {
-        if(time==60)
+        if(time==10)
             return true;
         else return false;
     }

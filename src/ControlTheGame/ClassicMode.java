@@ -9,7 +9,16 @@ import Objects.FatalBomb;
 import Objects.FruitFactory;
 import Objects.IDrops;
 public class ClassicMode implements GameMode {
- int lives=3;
+ private int lives=3;
+ private int score=0;
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 
     public int getGameVariable() {
         return lives;
@@ -38,7 +47,7 @@ public class ClassicMode implements GameMode {
 
     @Override
     public boolean endingCondition(int lives) {
-        if(lives<=0)
+        if(lives==0)
             return true;
          else return false;
     }
