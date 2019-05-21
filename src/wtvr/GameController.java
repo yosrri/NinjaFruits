@@ -9,5 +9,7 @@ public interface GameController {
     public void slice(IDrops obj);
     public void changeGameVariable(int x);
     public int getGameVariable();
+    public void saveGame();
+    public void loadGame();
 
 }
