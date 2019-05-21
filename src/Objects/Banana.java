@@ -12,7 +12,8 @@ import java.io.IOException;
 
 
 public class Banana extends Fruits implements IDrops {
-
+     private int x;
+     private int y;
 
     private static  Banana INSTANCE ;
     private boolean slice = false;
@@ -98,5 +99,33 @@ public class Banana extends Fruits implements IDrops {
         return dropImg;
 
     }
+
+
+	@Override
+	public void setX(int x) {
+		this.x=x;
+		
+	}
+
+
+	@Override
+	public void setY(int y) {
+		this.y=y;
+		
+	}
+
+
+	@Override
+	public int setX() {
+		// TODO Auto-generated method stub
+		return x;
+	}
+
+
+	@Override
+	public int setY() {
+		// TODO Auto-generated method stub
+		return y;
+	}
 
 }

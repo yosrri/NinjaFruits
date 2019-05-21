@@ -38,7 +38,7 @@ public class ClassicMode implements GameMode {
 
     @Override
     public boolean endingCondition(int lives) {
-        if(lives<=0)
+        if(lives==0)
             return true;
          else return false;
     }
